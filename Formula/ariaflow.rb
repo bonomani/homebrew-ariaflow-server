@@ -25,6 +25,38 @@ class Ariaflow < Formula
     error_log_path var/"log/ariaflow.err.log"
   end
 
+  plist do
+    <<~PLIST
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>homebrew.mxcl.ariaflow</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/ariaflow</string>
+          <string>serve</string>
+          <string>--host</string>
+          <string>127.0.0.1</string>
+          <string>--port</string>
+          <string>8000</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>WorkingDirectory</key>
+        <string>#{var}</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/ariaflow.log</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/ariaflow.err.log</string>
+      </dict>
+      </plist>
+    PLIST
+  end
+
   test do
     system bin/"ariaflow", "--help"
   end
