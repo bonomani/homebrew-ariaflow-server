@@ -1,9 +1,9 @@
 class Ariaflow < Formula
   desc "Sequential aria2 queue driver with adaptive bandwidth control"
   homepage "https://github.com/bonomani/ariaflow"
-  url "https://github.com/bonomani/ariaflow/archive/refs/tags/v0.1.1-alpha.10.tar.gz"
-  sha256 "a6bfa4c3b8f3c0512f33d4f25c5c403104af726d32482266d7580a9bc6105cee"
-  version "0.1.1-alpha.10"
+  url "https://github.com/bonomani/ariaflow/releases/download/v0.1.1-alpha.15/ariaflow-v0.1.1-alpha.15.tar.gz"
+  sha256 "caf659e398bd16e93c4c8c3da8eea42bf48b569d9d329a1feeae8721272cad00"
+  version "0.1.1-alpha.15"
   license "MIT"
   head "https://github.com/bonomani/ariaflow.git", branch: "master"
 
@@ -14,8 +14,8 @@ class Ariaflow < Formula
 
     (bin/"ariaflow").write <<~EOS
       #!/bin/bash
-      export PYTHONPATH="\#{libexec}/src:${PYTHONPATH}"
-      exec "\#{Formula["python3"].opt_bin}/python3" -m aria_queue "$@"
+      export PYTHONPATH="#{libexec}/src:${PYTHONPATH}"
+      exec "#{Formula["python3"].opt_bin}/python3" -m aria_queue "$@"
     EOS
     chmod 0755, bin/"ariaflow"
   end
