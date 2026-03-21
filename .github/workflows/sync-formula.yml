@@ -1,0 +1,74 @@
+name: sync-formula
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # every 15 minutes
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Get latest ariaflow release
+        id: release
+        run: |
+          TAG=$(curl -s https://api.github.com/repos/bonomani/ariaflow/releases/latest \
+            | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check current formula version
+        id: current
+        run: |
+          CURRENT=$(grep -oP '(?<=version ").*(?=")' Formula/ariaflow.rb || echo "none")
+          echo "version=$CURRENT" >> $GITHUB_OUTPUT
+
+      - name: Update formula if version changed
+        if: steps.release.outputs.version != steps.current.outputs.version
+        run: |
+          TAG="${{ steps.release.outputs.tag }}"
+          VERSION="${{ steps.release.outputs.version }}"
+          URL="https://github.com/bonomani/ariaflow/archive/refs/tags/${TAG}.tar.gz"
+          SHA256=$(curl -sL "$URL" | sha256sum | awk '{print $1}')
+
+          cat > Formula/ariaflow.rb <<FORMULA
+          class Ariaflow < Formula
+            desc "Sequential aria2 queue driver with adaptive bandwidth control"
+            homepage "https://github.com/bonomani/ariaflow"
+            url "${URL}"
+            sha256 "${SHA256}"
+            version "${VERSION}"
+            license "MIT"
+            head "https://github.com/bonomani/ariaflow.git", branch: "master"
+
+            depends_on "python@3.12"
+
+            def install
+              libexec.install "src"
+
+              (bin/"ariaflow").write <<~EOS
+                #!/bin/bash
+                export PYTHONPATH="\#{libexec}/src:\${PYTHONPATH}"
+                exec "\#{Formula["python@3.12"].opt_bin}/python3" -m aria_queue "\$@"
+              EOS
+              chmod 0755, bin/"ariaflow"
+            end
+
+            test do
+              system bin/"ariaflow", "--help"
+            end
+          end
+          FORMULA
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/ariaflow.rb
+          git commit -m "Update ariaflow formula to ${VERSION}"
+          git push
