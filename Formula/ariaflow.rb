@@ -17,6 +17,14 @@ class Ariaflow < Formula
     chmod 0755, bin/"ariaflow"
   end
 
+  service do
+    run [opt_bin/"ariaflow", "serve", "--host", "127.0.0.1", "--port", "8000"]
+    keep_alive true
+    working_dir var
+    log_path var/"log/ariaflow.log"
+    error_log_path var/"log/ariaflow.err.log"
+  end
+
   test do
     system bin/"ariaflow", "--help"
   end
