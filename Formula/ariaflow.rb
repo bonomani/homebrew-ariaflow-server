@@ -14,8 +14,8 @@ class Ariaflow < Formula
 
     (bin/"ariaflow").write <<~EOS
       #!/bin/bash
-      export PYTHONPATH="\#{libexec}/src:${PYTHONPATH}"
-      exec "\#{Formula["python@3.12"].opt_bin}/python3" -m aria_queue "$@"
+      export PYTHONPATH="#{libexec}/src:${PYTHONPATH}"
+      exec "#{Formula["python@3.12"].opt_bin}/python3" -m aria_queue "$@"
     EOS
     chmod 0755, bin/"ariaflow"
   end
