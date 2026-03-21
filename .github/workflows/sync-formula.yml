@@ -21,14 +21,9 @@ jobs:
       - name: Get latest ariaflow release
         id: release
         run: |
-          # Skip draft releases — filter to only published (non-draft, non-prerelease ignored) releases
+          # Skip draft releases — use first published (non-draft) release
           TAG=$(curl -s https://api.github.com/repos/bonomani/ariaflow/releases \
-            | python3 -c "
-import sys,json
-releases = json.load(sys.stdin)
-published = [r for r in releases if not r.get('draft', True) and r.get('tag_name')]
-print(published[0]['tag_name'])
-")
+            | python3 -c "import sys,json; r=[x for x in json.load(sys.stdin) if not x.get('draft',True) and x.get('tag_name')]; print(r[0]['tag_name'])")
           VERSION="${TAG#v}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
