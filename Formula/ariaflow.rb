@@ -5,6 +5,8 @@ class Ariaflow < Formula
   sha256 "7c4a7bd863b3dc1734d5c6591a790ccea12d9d1cbe198a5d9d4fe0d8c26162bd"
   version "0.1.1-alpha.35"
   license "MIT"
+  depends_on "python"
+  depends_on "aria2"
   head "https://github.com/bonomani/ariaflow.git", branch: "master"
 
   def install
