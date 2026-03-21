@@ -7,7 +7,7 @@ class Ariaflow < Formula
   license "MIT"
   head "https://github.com/bonomani/ariaflow.git", branch: "master"
 
-  depends_on "python@3.12"
+  depends_on "python3"
 
   def install
     libexec.install "src"
@@ -15,7 +15,7 @@ class Ariaflow < Formula
     (bin/"ariaflow").write <<~EOS
       #!/bin/bash
       export PYTHONPATH="#{libexec}/src:${PYTHONPATH}"
-      exec "#{Formula["python@3.12"].opt_bin}/python3" -m aria_queue "$@"
+      exec "#{Formula["python3"].opt_bin}/python3" -m aria_queue "$@"
     EOS
     chmod 0755, bin/"ariaflow"
   end
