@@ -17,10 +17,16 @@ class Ariaflow < Formula
       exec env PYTHONPATH="#{libexec}/src:${PYTHONPATH}" python3 -m aria_queue "$@"
     EOS
     chmod 0755, bin/"ariaflow"
+
+    (bin/"ariaflow-api").write <<~EOS
+      #!/bin/bash
+      exec env PYTHONPATH="#{libexec}/src:${PYTHONPATH}" python3 -c "from aria_queue.webapp import serve; server = serve(host='127.0.0.1', port=8000); print('Serving API on http://127.0.0.1:8000'); server.serve_forever()"
+    EOS
+    chmod 0755, bin/"ariaflow-api"
   end
 
   service do
-    run [opt_bin/"ariaflow", "serve", "--host", "127.0.0.1", "--port", "8000"]
+    run [opt_bin/"ariaflow-api"]
     keep_alive true
     working_dir var
     log_path var/"log/ariaflow.log"
