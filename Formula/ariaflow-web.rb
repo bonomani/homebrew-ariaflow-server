@@ -1,18 +1,20 @@
 class AriaflowWeb < Formula
   desc "Local dashboard frontend for ariaflow"
   homepage "https://github.com/bonomani/ariaflow-web"
-  url "https://github.com/bonomani/ariaflow-web/archive/refs/tags/v0.1.13.tar.gz"
-  sha256 "47445c7000b97e14482e56a5986754df198eaea1a76cb6d1c9f1a49364e3506a"
-  version "0.1.13"
+  url "https://github.com/bonomani/ariaflow-web/archive/refs/tags/v0.1.18.tar.gz"
+  sha256 "d17ab75040583d22c8dcaa03b051ae26dfbb94b3a6b51cdf66552757f4ff8b58"
+  version "0.1.18"
   license "MIT"
   depends_on "python"
+  depends_on "ariaflow"
+  head "https://github.com/bonomani/ariaflow-web.git", branch: "main"
 
   def install
     libexec.install "src"
 
     (bin/"ariaflow-web").write <<~EOS
       #!/bin/bash
-      exec env PYTHONPATH="#{libexec}/src:${PYTHONPATH}" python3 -m ariaflow_web.cli "$@"
+      exec env PYTHONPATH="#{libexec}/src:#{PYTHONPATH}" python3 -m ariaflow_web.cli "$@"
     EOS
     chmod 0755, bin/"ariaflow-web"
   end
