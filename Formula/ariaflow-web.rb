@@ -1,9 +1,9 @@
 class AriaflowWeb < Formula
   desc "Local dashboard frontend for ariaflow"
   homepage "https://github.com/bonomani/ariaflow-web"
-  url "https://github.com/bonomani/ariaflow-web/archive/refs/tags/v0.1.147.tar.gz"
-  sha256 "3beead14105179ca856a080fc6a54a4c275e072f45b529faacd2b7e3e27c2c1e"
-  version "0.1.147"
+  url "https://github.com/bonomani/ariaflow-web/archive/refs/tags/v0.1.148.tar.gz"
+  sha256 "9921439f276699904b6cc0de8b6cbbb6da7750eea6c26b0f0011a9c59d7fe9c0"
+  version "0.1.148"
   license "MIT"
   depends_on "python"
   depends_on "ariaflow"
