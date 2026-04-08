@@ -1,9 +1,9 @@
 class Ariaflow < Formula
   desc "Sequential aria2 queue driver with adaptive bandwidth control"
   homepage "https://github.com/bonomani/ariaflow"
-  url "https://github.com/bonomani/ariaflow/archive/refs/tags/v0.1.154.tar.gz"
-  sha256 "ef2bb3700b75c94eeb0cde0ec21dd1e5fc908d514bb69344792a11228c442a0b"
-  version "0.1.154"
+  url "https://github.com/bonomani/ariaflow/archive/refs/tags/v0.1.155.tar.gz"
+  sha256 "b7bd538996ae368c3225359939b51df9c97b5cd0cffcd67ffef8e4f82e2a67de"
+  version "0.1.155"
   license "MIT"
   depends_on "python"
   depends_on "aria2"
