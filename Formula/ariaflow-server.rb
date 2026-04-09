@@ -23,11 +23,12 @@ class AriaflowServer < Formula
 
     libexec.install "src"
 
+    # Resolve the site-packages path at install time (glob won't expand at runtime)
+    site_packages = Dir[venv/"lib/python*/site-packages"].first
+
     (bin/"ariaflow-server").write <<~EOS
       #!/bin/bash
-      VENV="#{libexec}/venv"
-      SITE=$(find "$VENV/lib" -maxdepth 1 -name 'python3.*' -print -quit)/site-packages
-      exec env PYTHONPATH="#{libexec}/src:$SITE:${PYTHONPATH}" "$VENV/bin/python3" -m ariaflow_server "$@"
+      exec env PYTHONPATH="#{libexec}/src:#{site_packages}:${PYTHONPATH}" #{venv}/bin/python3 -m ariaflow_server "$@"
     EOS
     chmod 0755, bin/"ariaflow-server"
   end
