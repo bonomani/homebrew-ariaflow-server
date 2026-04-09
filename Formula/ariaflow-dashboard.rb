@@ -1,11 +1,12 @@
-class AriaflowDashboard < Formula
+class AriaflowWeb < Formula
   desc "Local dashboard frontend for ariaflow"
   homepage "https://github.com/bonomani/ariaflow-dashboard"
-  url "https://github.com/bonomani/ariaflow-dashboard/archive/refs/tags/v0.1.244.tar.gz"
-  sha256 "453fa7ac9c76e458fbc8b6b24321abe807860a68bf94e429fe7073be31db4cd4"
-  version "0.1.244"
+  url "https://github.com/bonomani/ariaflow-dashboard/archive/refs/tags/v0.1.286.tar.gz"
+  sha256 "455987175b49dc952ea97214b23448b64dbccf195d720e3f49776a1b50c6725c"
+  version "0.1.286"
   license "MIT"
   depends_on "python"
+  depends_on "ariaflow"
   head "https://github.com/bonomani/ariaflow-dashboard.git", branch: "main"
 
   def install
@@ -13,7 +14,7 @@ class AriaflowDashboard < Formula
 
     (bin/"ariaflow-dashboard").write <<~EOS
       #!/bin/bash
-      exec env PYTHONPATH="#{libexec}/src:${PYTHONPATH}" python3 -m ariaflow_web.cli "$@"
+      exec env PYTHONPATH="#{libexec}/src:${PYTHONPATH}" python3 -m ariaflow_dashboard.cli "$@"
     EOS
     chmod 0755, bin/"ariaflow-dashboard"
   end
@@ -25,16 +26,6 @@ class AriaflowDashboard < Formula
     working_dir var
     log_path var/"log/ariaflow-dashboard.log"
     error_log_path var/"log/ariaflow-dashboard.err.log"
-  end
-
-  def caveats
-    <<~EOS
-      ariaflow-dashboard can connect to a remote ariaflow-server instance via ARIAFLOW_API_URL.
-      To run both locally:
-        brew install ariaflow
-        brew services start ariaflow-server
-        brew services start ariaflow-dashboard
-    EOS
   end
 
   test do
